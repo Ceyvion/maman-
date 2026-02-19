@@ -362,7 +362,7 @@
   textarea,
   button {
     font-size: 16px !important;
-    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   .mobile-overlay {

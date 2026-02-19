@@ -173,11 +173,11 @@
 
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── Scrollbar defaults for main content ── */
-::-webkit-scrollbar { width: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--main-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--main-muted); }
+/* ── Scrollbar defaults for main content (cross-browser) ── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--main-border) transparent;
+}
 
 /* ── Print ── */
 @media print {

@@ -122,11 +122,9 @@ body {
   flex: 1;
   overflow-y: auto;
   padding: 0 2rem 2rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--main-border) transparent;
 }
-
-.timeline-container::-webkit-scrollbar { width: 6px; }
-.timeline-container::-webkit-scrollbar-thumb { background: var(--main-border); border-radius: 3px; }
-.timeline-container::-webkit-scrollbar-thumb:hover { background: var(--main-muted); }
 
 .timeline-empty {
   display: flex;
