@@ -1,0 +1,131 @@
+/* ==========================================================================
+   Design Tokens — Calendar Redesign
+   Inspired by reference: olive/sage/cream palette + dark sidebar
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Serif+Display&display=swap');
+
+:root {
+  /* ── Dark Sidebar ── */
+  --sidebar-dark-bg: #2C2E28;
+  --sidebar-dark-surface: #383A33;
+  --sidebar-dark-hover: #43453D;
+  --sidebar-dark-text: #E8E6E1;
+  --sidebar-dark-muted: #9B9990;
+  --sidebar-dark-border: #43453D;
+  --sidebar-dark-accent: #C5C4A1;
+
+  /* ── Main Area ── */
+  --main-bg: #F5F3ED;
+  --main-surface: #FFFFFF;
+  --main-text: #1A1815;
+  --main-text-secondary: #6B6860;
+  --main-muted: #8B8680;
+  --main-border: #E5E2DC;
+  --main-border-subtle: #ECEAE4;
+
+  /* ── Olive / Sage Accent (reference palette) ── */
+  --olive-primary: #C5C4A1;
+  --olive-dark: #A8A785;
+  --olive-light: #E4E3D1;
+  --olive-bg: #F0EFDF;
+  --sage-green: #B8C4A8;
+  --sage-dark: #8FA080;
+
+  /* ── Right Sidebar ── */
+  --right-bg: #F8F7F2;
+  --right-surface: #FFFFFF;
+  --right-border: #E8E6E0;
+
+  /* ── Shift Colors (card left-border accents) ── */
+  --shift-matin-accent: #7AADCA;
+  --shift-matin-bg: #EDF5F9;
+  --shift-matin-text: #3A6E85;
+  --shift-matin-label: #D1E5EA;
+
+  --shift-soir-accent: #D4A34A;
+  --shift-soir-bg: #FDF6E6;
+  --shift-soir-text: #8A6A1A;
+  --shift-soir-label: #F7E8B8;
+
+  --shift-12h-accent: #7DAE8B;
+  --shift-12h-bg: #EDF5EF;
+  --shift-12h-text: #3D6B4A;
+  --shift-12h-label: #D5E5DC;
+
+  /* ── Event Card Category Colors ── */
+  --cat-matin: #D1E5EA;
+  --cat-soir: #FDF6E3;
+  --cat-12h: #D5E5DC;
+
+  /* ── Semantic ── */
+  --success: #7DAE8B;
+  --success-subtle: #EDF5EF;
+  --success-text: #3D6B4A;
+  --warning: #D4A34A;
+  --warning-subtle: #FDF5E6;
+  --warning-text: #8B6914;
+  --danger: #C07070;
+  --danger-subtle: #F9EDED;
+  --danger-text: #8B3A3A;
+  --info: #7AADCA;
+  --info-subtle: #EDF5F9;
+  --info-text: #3A6E85;
+
+  /* ── Avatar Colors ── */
+  --avatar-1: #C5C4A1;
+  --avatar-2: #A8C4D8;
+  --avatar-3: #E8B4B8;
+  --avatar-4: #C4B8D8;
+  --avatar-5: #B8C4A8;
+  --avatar-6: #D8C4A8;
+
+  /* ── Radii ── */
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ── */
+  --shadow-xs: 0 1px 2px rgba(44, 40, 37, 0.04);
+  --shadow-sm: 0 1px 3px rgba(44, 40, 37, 0.06), 0 1px 2px rgba(44, 40, 37, 0.04);
+  --shadow-md: 0 4px 12px rgba(44, 40, 37, 0.06), 0 2px 4px rgba(44, 40, 37, 0.04);
+  --shadow-lg: 0 8px 24px rgba(44, 40, 37, 0.08), 0 4px 8px rgba(44, 40, 37, 0.04);
+  --shadow-overlay: 0 16px 48px rgba(26, 24, 21, 0.15), 0 8px 16px rgba(26, 24, 21, 0.08);
+
+  /* ── Transitions ── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --transition-fast: 150ms var(--ease-out);
+  --transition-base: 250ms var(--ease-out);
+  --transition-slow: 400ms var(--ease-out);
+
+  /* ── Typography ── */
+  --font-sans: 'DM Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-serif: 'DM Serif Display', Georgia, serif;
+  --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+}
+
+/* ==========================================================================
+   Reset & Base
+   ========================================================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--main-text);
+  line-height: 1.5;
+  min-height: 100vh;
+  overflow: hidden;
+}

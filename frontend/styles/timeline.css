@@ -1,0 +1,328 @@
+/* ==========================================================================
+   Timeline — Day-by-Day Vertical View + Event Cards
+   ========================================================================== */
+
+/* ── Day Block ── */
+.day-block {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--main-border-subtle);
+  position: relative;
+}
+
+.day-block:last-child { border-bottom: none; }
+
+/* ── Day Label (left column) ── */
+.day-label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  padding-top: 0.25rem;
+}
+
+.day-number {
+  font-family: var(--font-serif);
+  font-size: 4rem;
+  font-weight: 400;
+  line-height: 1;
+  color: var(--main-text);
+  letter-spacing: -0.03em;
+}
+
+.day-block.weekend .day-number { color: var(--main-muted); }
+
+.day-name {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--main-text-secondary);
+  text-transform: capitalize;
+}
+
+.day-block.weekend .day-name { color: var(--main-muted); }
+
+/* ── Events Column (right column) ── */
+.day-events {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  padding-top: 0.5rem;
+}
+
+/* ── Next Meeting Divider ── */
+.next-meeting {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0;
+  color: var(--main-muted);
+  font-size: 0.7rem;
+}
+
+.next-meeting::before,
+.next-meeting::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--main-border-subtle);
+}
+
+/* ── Event Card ── */
+.event-card {
+  background: var(--main-surface);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--olive-primary);
+  padding: 0.875rem 1rem;
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  cursor: default;
+}
+
+.event-card:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.event-card.shift-matin { border-left-color: var(--shift-matin-accent); }
+.event-card.shift-soir { border-left-color: var(--shift-soir-accent); }
+.event-card.shift-12h { border-left-color: var(--shift-12h-accent); }
+
+.event-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.375rem;
+}
+
+.event-time {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--main-muted);
+  letter-spacing: 0.02em;
+}
+
+.event-time-range {
+  color: var(--main-text-secondary);
+}
+
+.event-category {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.event-category.cat-matin { background: var(--shift-matin-bg); color: var(--shift-matin-text); }
+.event-category.cat-soir { background: var(--shift-soir-bg); color: var(--shift-soir-text); }
+.event-category.cat-12h { background: var(--shift-12h-bg); color: var(--shift-12h-text); }
+
+.event-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--main-text);
+  margin-bottom: 0.25rem;
+}
+
+.event-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.event-subtitle {
+  font-size: 0.75rem;
+  color: var(--main-muted);
+}
+
+.event-coverage {
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--success-text);
+  background: var(--success-subtle);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-full);
+}
+
+.event-coverage.warn {
+  color: var(--danger-text);
+  background: var(--danger-subtle);
+}
+
+/* ── Agent Avatars Row ── */
+.event-agents {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.agent-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.5rem 0.2rem 0.2rem;
+  border-radius: var(--radius-full);
+  background: var(--main-bg);
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--main-text);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: 1px solid transparent;
+}
+
+.agent-chip:hover {
+  background: var(--olive-light);
+  transform: translateY(-1px);
+}
+
+.agent-chip.locked {
+  border-color: var(--danger);
+  background: var(--danger-subtle);
+  color: var(--danger-text);
+  font-weight: 600;
+}
+
+.agent-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: var(--sidebar-dark-bg);
+  flex-shrink: 0;
+}
+
+.agent-avatar-group {
+  display: flex;
+}
+
+.agent-avatar-group .agent-avatar {
+  margin-left: -6px;
+  border: 2px solid var(--main-surface);
+}
+
+.agent-avatar-group .agent-avatar:first-child { margin-left: 0; }
+
+/* ── Add Button ── */
+.day-add-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: 1px dashed var(--main-border);
+  background: none;
+  color: var(--main-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  align-self: flex-end;
+}
+
+.day-add-btn:hover {
+  border-color: var(--olive-primary);
+  color: var(--olive-dark);
+  background: var(--olive-bg);
+}
+
+/* ── No Events ── */
+.day-no-events {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  color: var(--main-muted);
+  font-size: 0.78rem;
+  font-style: italic;
+}
+
+/* ── Agent Matrix Table ── */
+.agent-matrix-wrap {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.agent-matrix {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 0.78rem;
+  border: 1px solid var(--main-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.agent-matrix th,
+.agent-matrix td {
+  border-right: 1px solid var(--main-border-subtle);
+  border-bottom: 1px solid var(--main-border-subtle);
+  padding: 0.4rem 0.5rem;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.agent-matrix th:first-child,
+.agent-matrix td:first-child {
+  text-align: left;
+  position: sticky;
+  left: 0;
+  background: var(--main-surface);
+  z-index: 1;
+  border-right: 2px solid var(--main-border);
+}
+
+.agent-matrix th {
+  background: var(--main-bg);
+  color: var(--main-muted);
+  text-transform: uppercase;
+  font-size: 0.65rem;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+}
+
+.matrix-agent {
+  min-width: 150px;
+  font-weight: 600;
+  color: var(--main-text);
+}
+
+.matrix-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  padding: 0.15rem 0.4rem;
+  border-radius: var(--radius-xs);
+  font-size: 0.68rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.matrix-chip.shift-matin { background: var(--shift-matin-bg); color: var(--shift-matin-text); }
+.matrix-chip.shift-soir { background: var(--shift-soir-bg); color: var(--shift-soir-text); }
+.matrix-chip.shift-12h { background: var(--shift-12h-bg); color: var(--shift-12h-text); }
+.matrix-chip.locked { outline: 2px solid var(--danger); }
+
+.matrix-off {
+  color: var(--main-border);
+  font-size: 0.65rem;
+}
+
+.matrix-total {
+  font-weight: 600;
+  color: var(--main-text);
+}
+
+.weekend-col { background: var(--main-bg) !important; }

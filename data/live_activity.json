@@ -1,0 +1,16 @@
+{
+  "entries": [
+    {
+      "id": "33d0ac5a-9cde-458d-b80e-a8a35c729df3",
+      "agent_id": "A1",
+      "agent_name": "Dupont Anna",
+      "date": "2026-02-10",
+      "shift": "MATIN",
+      "task_title": "shit",
+      "details": "take a shit",
+      "status": "blocked",
+      "created_at": "2026-02-19T10:50:22Z",
+      "updated_at": "2026-02-19T10:50:22Z"
+    }
+  ]
+}

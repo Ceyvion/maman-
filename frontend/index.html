@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#2C2E28" />
+  <meta name="description" content="Planning Jour — Generation de planning jour conforme FPH" />
+  <title>Planning Jour</title>
+  <link rel="stylesheet" href="styles/tokens.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+  <link rel="stylesheet" href="styles/sidebar-left.css" />
+  <link rel="stylesheet" href="styles/timeline.css" />
+  <link rel="stylesheet" href="styles/sidebar-right.css" />
+  <link rel="stylesheet" href="styles/modals.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/month-overview.css" />
+  <link rel="stylesheet" href="styles/command-bar.css" />
+  <link rel="stylesheet" href="styles/responsive.css" />
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       LEFT SIDEBAR (dark)
+       ════════════════════════════════════════════════════════════════════ -->
+  <aside class="sidebar-left">
+    <div class="sidebar-header">
+      <div class="app-brand">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span class="app-brand-text">Calendar</span>
+      </div>
+      <button class="btn-icon" id="btn_search" title="Rechercher">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+
+    <!-- Mini Calendar -->
+    <div class="mini-calendar" id="mini_calendar"></div>
+
+    <!-- Today's Events / Shift Assignments -->
+    <div class="sidebar-section">
+      <div class="section-head">
+        <span>Events</span>
+        <button class="btn-icon-sm" id="btn_add_event" title="Ouvrir parametres">+</button>
+      </div>
+      <div class="sidebar-events" id="sidebar_events">
+        <div class="sidebar-empty">Generez un planning</div>
+      </div>
+    </div>
+
+    <!-- Sidebar Navigation Icons -->
+    <nav class="sidebar-nav">
+      <button class="nav-btn active" data-nav="calendar" title="Calendrier">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </button>
+      <button class="nav-btn" data-nav="agents" id="nav_agents" title="Agents">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </button>
+      <button class="nav-btn" data-nav="settings" id="nav_settings" title="Parametres">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      </button>
+      <button class="nav-btn" data-nav="live" title="Suivi live">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </button>
+    </nav>
+
+    <!-- Tasks Preview -->
+    <div class="sidebar-section sidebar-tasks-section">
+      <div class="section-head">
+        <span>Tasks</span>
+        <button class="btn-icon-sm" id="btn_add_task" title="Ajouter tache">+</button>
+      </div>
+      <div class="sidebar-tasks" id="sidebar_tasks">
+        <div class="sidebar-empty">Aucune tache</div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       MAIN CENTER AREA
+       ════════════════════════════════════════════════════════════════════ -->
+  <main class="main-area">
+    <header class="main-header">
+      <h1 class="month-title" id="month_title">Fevrier 2026</h1>
+      <div class="header-actions">
+        <button class="btn-header" id="btn_open_settings">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09a1.65 1.65 0 0 0 0-3z"/></svg>
+          Parametres
+        </button>
+        <button class="btn-header" id="btn_open_agents">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          Agents
+        </button>
+        <button class="btn-primary" id="generate">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          Generer
+        </button>
+        <button class="btn-header" id="generate_month" title="Generer le mois entier">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          Mois entier
+        </button>
+        <button class="btn-header btn-share" id="btn_share">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+          Share
+        </button>
+      </div>
+    </header>
+
+    <!-- Feedback / Status Bar -->
+    <div class="status-bar hidden" id="status_bar">
+      <span id="status_message"></span>
+      <button class="btn-sm" id="status_action" style="display:none">Regenerer</button>
+    </div>
+
+    <!-- View Toggle -->
+    <div class="view-toggle" id="view_toggle" style="display:none">
+      <button class="view-btn active" data-view="timeline">Timeline</button>
+      <button class="view-btn" data-view="overview">Vue mois</button>
+      <button class="view-btn" data-view="matrix">Matrice agents</button>
+    </div>
+
+    <!-- Day-by-Day Timeline -->
+    <div class="timeline-container" id="timeline">
+      <div class="timeline-empty">
+        <div class="empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--main-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <p>Configurez vos parametres et generez un planning</p>
+        <button class="btn-primary" id="empty_generate">Commencer</button>
+      </div>
+    </div>
+
+    <!-- Month Overview (hidden by default) -->
+    <div class="month-overview-container hidden" id="month_overview"></div>
+
+    <!-- Agent Matrix (hidden by default) -->
+    <div class="matrix-container hidden" id="matrix_container"></div>
+
+    <!-- Print Summary (hidden, shown on print) -->
+    <div id="print_summary" class="print-only"></div>
+  </main>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       RIGHT SIDEBAR
+       ════════════════════════════════════════════════════════════════════ -->
+  <aside class="sidebar-right">
+    <!-- Compliance Panel -->
+    <div class="right-panel compliance-panel">
+      <div class="right-panel-header">
+        <h3>Conformite FPH</h3>
+        <span class="badge badge-ok" id="compliance_global_badge">--</span>
+      </div>
+      <div class="compliance-badges" id="compliance_badges">
+        <div class="compliance-item">
+          <span class="compliance-label">Repos quotidien</span>
+          <span class="compliance-value" id="comp_daily_rest">--</span>
+        </div>
+        <div class="compliance-item">
+          <span class="compliance-label">Repos hebdo</span>
+          <span class="compliance-value" id="comp_weekly_rest">--</span>
+        </div>
+        <div class="compliance-item">
+          <span class="compliance-label">Couverture</span>
+          <span class="compliance-value" id="comp_coverage">--</span>
+        </div>
+        <div class="compliance-item">
+          <span class="compliance-label">Pattern MSM</span>
+          <span class="compliance-value" id="comp_msm">--</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats Panel -->
+    <div class="right-panel stats-panel" id="stats_panel">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-value" id="stat_assignments">0</span>
+          <span class="stat-label">Affectations</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat_coverage">--%</span>
+          <span class="stat-label">Couverture</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat_locks">0</span>
+          <span class="stat-label">Verrous</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-value" id="stat_agents">0</span>
+          <span class="stat-label">Agents</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs: Tasks + Docs -->
+    <div class="right-tabs">
+      <div class="tab-buttons">
+        <button class="tab-btn active" data-tab="tasks">Tasks</button>
+        <button class="tab-btn" data-tab="docs">Docs</button>
+      </div>
+
+      <!-- Tasks Tab -->
+      <div class="tab-content" id="tab_tasks">
+        <div class="task-list" id="right_tasks">
+          <div class="sidebar-empty">Aucune tache</div>
+        </div>
+      </div>
+
+      <!-- Docs Tab -->
+      <div class="tab-content hidden" id="tab_docs">
+        <div class="docs-actions">
+          <button class="btn-doc" id="download_csv">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exporter CSV
+          </button>
+          <button class="btn-doc" id="download_pdf">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Exporter PDF
+          </button>
+          <button class="btn-doc" id="print_planning">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Imprimer
+          </button>
+        </div>
+        <div class="tracker-section">
+          <div class="section-head">
+            <span>Tracker annuel</span>
+            <button class="btn-icon-sm" id="refresh_tracker">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+            </button>
+          </div>
+          <div id="tracker_view" class="tracker-view"></div>
+        </div>
+        <!-- Compliance JSON (collapsible) -->
+        <details class="compliance-details">
+          <summary>Donnees conformite brutes</summary>
+          <pre id="compliance_json" class="compliance-json"></pre>
+        </details>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       MODAL OVERLAY
+       ════════════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay hidden" id="modal_overlay"></div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       DRAWER: SETTINGS (Parameters)
+       ════════════════════════════════════════════════════════════════════ -->
+  <div class="drawer drawer-left hidden" id="drawer_settings">
+    <div class="drawer-header">
+      <h2>Parametres planning</h2>
+      <button class="btn-icon drawer-close" data-close="drawer_settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+      <input id="simple_mode" type="checkbox" checked hidden />
+
+      <div class="form-group">
+        <label class="form-label">Service/Unite</label>
+        <input id="service_unit" type="text" value="USLD" class="form-input" />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Debut</label>
+          <input id="start_date" type="date" value="2026-02-09" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Fin</label>
+          <input id="end_date" type="date" value="2026-02-15" class="form-input" />
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Mode</label>
+        <select id="mode" class="form-input">
+          <option value="12h_jour">12h jour</option>
+          <option value="matin_soir" selected>Matin-Soir</option>
+          <option value="mixte">Mixte</option>
+        </select>
+      </div>
+
+      <div class="form-row form-row-3">
+        <div class="form-group">
+          <label class="form-label">MATIN</label>
+          <input id="cov_matin" type="number" min="0" value="1" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">SOIR</label>
+          <input id="cov_soir" type="number" min="0" value="1" class="form-input" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">JOUR_12H</label>
+          <input id="cov_12h" type="number" min="0" value="0" class="form-input" />
+        </div>
+      </div>
+
+      <details class="advanced-section" id="screen1_advanced">
+        <summary>Options avancees</summary>
+        <div class="advanced-grid">
+          <label class="check-label"><input id="allow_12h_exception" type="checkbox" /> Exception 12h mixte</label>
+          <div class="form-group">
+            <label class="form-label">Max 12h/agent</label>
+            <input id="max_12h_exception" type="number" min="0" value="1" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date exception 12h</label>
+            <input id="exception_12h_date" type="date" class="form-input" />
+          </div>
+          <label class="check-label"><input id="forbid_msm" type="checkbox" checked /> Interdire M-S-M</label>
+          <label class="check-label"><input id="use_tracker" type="checkbox" checked /> Utiliser tracker</label>
+          <div class="form-group">
+            <label class="form-label">Annee tracker</label>
+            <input id="tracker_year" type="number" min="2020" value="2026" class="form-input" />
+          </div>
+          <label class="check-label"><input id="auto_add_agents" type="checkbox" checked /> Auto-ajout agents</label>
+          <div class="form-group">
+            <label class="form-label">Max renforts</label>
+            <input id="max_extra_agents" type="number" min="0" value="6" class="form-input" />
+          </div>
+          <label class="check-label"><input id="record_tracker" type="checkbox" /> Enregistrer heures</label>
+        </div>
+      </details>
+    </div>
+    <div class="drawer-footer">
+      <button class="btn-secondary" id="apply_recommended">Parametres recommandes</button>
+      <button class="btn-primary" data-close="drawer_settings">Appliquer</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       DRAWER: AGENTS
+       ════════════════════════════════════════════════════════════════════ -->
+  <div class="drawer drawer-right hidden" id="drawer_agents">
+    <div class="drawer-header">
+      <h2>Configuration agents</h2>
+      <button class="btn-icon drawer-close" data-close="drawer_agents">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+      <div class="agents-table-wrap">
+        <table class="agents-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Prenom</th>
+              <th>Regime</th>
+              <th>Quotite</th>
+              <th class="advanced-col">Cible (h)</th>
+              <th>Indisponibilites</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="agents_body"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="drawer-footer">
+      <button class="btn-secondary" id="add_agent">Ajouter</button>
+      <button class="btn-secondary" id="build_min_team">Equipe minimale</button>
+      <button class="btn-secondary" id="load_demo">Demo</button>
+      <button class="btn-primary" data-close="drawer_agents">Appliquer</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       DRAWER: LIVE TASKS
+       ════════════════════════════════════════════════════════════════════ -->
+  <div class="drawer drawer-right hidden" id="drawer_live">
+    <div class="drawer-header">
+      <h2>Suivi en temps reel</h2>
+      <button class="btn-icon drawer-close" data-close="drawer_live">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+      <div class="live-toolbar">
+        <label class="check-label"><input id="live_auto_refresh" type="checkbox" checked /> Auto-refresh 10s</label>
+        <button class="btn-sm" id="refresh_live">Rafraichir</button>
+        <span class="text-muted text-sm" id="live_server_time"></span>
+      </div>
+      <div id="fr_compliance_notice" class="compliance-notice"></div>
+      <div class="live-form">
+        <div class="form-group">
+          <label class="form-label">Affectation</label>
+          <select id="live_assignment_select" class="form-input"></select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Statut</label>
+            <select id="live_status" class="form-input">
+              <option value="planned">Prevu</option>
+              <option value="in_progress">En cours</option>
+              <option value="blocked">Bloque</option>
+              <option value="done">Termine</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tache</label>
+            <input id="live_task_title" placeholder="Ex: Distribution medicaments" class="form-input" />
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Details</label>
+          <input id="live_task_details" placeholder="Sans donnees patient" class="form-input" />
+        </div>
+        <button class="btn-primary" id="add_live_task">Ajouter tache</button>
+      </div>
+      <div id="live_entries_full"></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════════════════
+       COMMAND BAR (Cmd+K)
+       ════════════════════════════════════════════════════════════════════ -->
+  <div class="command-overlay hidden" id="command_overlay"></div>
+  <div class="command-bar hidden" id="command_bar">
+    <div class="command-input-wrap">
+      <svg class="command-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="command-input" id="command_input" placeholder="Rechercher une action..." autocomplete="off" />
+      <span class="command-kbd">ESC</span>
+    </div>
+    <div class="command-results" id="command_results"></div>
+    <div class="command-footer">
+      <div class="command-footer-hints">
+        <span class="command-footer-hint"><kbd>&uarr;&darr;</kbd> Naviguer</span>
+        <span class="command-footer-hint"><kbd>&crarr;</kbd> Executer</span>
+        <span class="command-footer-hint"><kbd>ESC</kbd> Fermer</span>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

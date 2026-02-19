@@ -1,0 +1,61 @@
+{
+  "params": {
+    "service_unit": "USLD",
+    "start_date": "2026-02-09",
+    "end_date": "2026-02-15",
+    "mode": "matin_soir",
+    "coverage_requirements": {
+      "MATIN": 1,
+      "SOIR": 1,
+      "JOUR_12H": 0
+    },
+    "planning_scope": {
+      "day_only": true,
+      "service_window": {"start": "07:00", "end": "21:00"}
+    },
+    "shifts": {
+      "MATIN": {"start": "07:00", "end": "14:00", "duration_minutes": 420},
+      "SOIR": {"start": "14:00", "end": "21:00", "duration_minutes": 420},
+      "JOUR_12H": {"start": "07:00", "end": "19:00", "duration_minutes": 720}
+    },
+    "assumptions": {"transmissions_included": true, "pause_included_in_shift": true},
+    "admin_params": {"transmissions_minutes": 15, "pause_min_minutes": 20},
+    "ruleset_defaults": {
+      "daily_rest_min_minutes": 720,
+      "daily_rest_min_minutes_with_agreement": 660,
+      "weekly_rest_min_minutes": 2160,
+      "max_minutes_rolling_7d": 2880,
+      "cycle_mode_enabled": false,
+      "cycle_weeks": 4,
+      "max_minutes_per_week_excluding_overtime": 2640
+    },
+    "agent_regimes": {
+      "REGIME_12H_JOUR": {"allowed_shifts": ["JOUR_12H"], "max_consecutive_12h_days": 3},
+      "REGIME_MATIN_ONLY": {"allowed_shifts": ["MATIN"]},
+      "REGIME_SOIR_ONLY": {"allowed_shifts": ["SOIR"]},
+      "REGIME_MIXTE": {"allowed_shifts": ["MATIN", "SOIR"]}
+    },
+    "hard_forbidden_transitions": [
+      {"from": "SOIR", "to": "MATIN", "reason": "daily_rest < 11h (10h)"},
+      {"from": "SOIR", "to": "JOUR_12H", "reason": "daily_rest < 11h (10h)"}
+    ],
+    "legal_profile": "FPH",
+    "agreement_11h_enabled": false,
+    "allow_single_12h_exception": false,
+    "max_12h_exceptions_per_agent": 1,
+    "allowed_12h_exception_dates": [],
+    "forbid_matin_soir_matin": true,
+    "use_tracker": true,
+    "tracker_year": 2026,
+    "auto_add_agents_if_needed": true,
+    "max_extra_agents": 6,
+    "record_tracker_on_generate": false
+  },
+  "agents": [
+    {"id": "A1", "first_name": "Anna", "last_name": "Dupont", "regime": "REGIME_MIXTE", "quotity": 100, "annual_target_hours": 1607, "unavailability_dates": []},
+    {"id": "A2", "first_name": "Samir", "last_name": "Khelifi", "regime": "REGIME_MIXTE", "quotity": 100, "annual_target_hours": 1607, "unavailability_dates": []},
+    {"id": "A3", "first_name": "Lea", "last_name": "Martin", "regime": "REGIME_MIXTE", "quotity": 80, "annual_target_hours": 1286, "unavailability_dates": []},
+    {"id": "A4", "first_name": "Noe", "last_name": "Bernard", "regime": "REGIME_MIXTE", "quotity": 80, "annual_target_hours": 1286, "unavailability_dates": []}
+  ],
+  "locked_assignments": []
+}

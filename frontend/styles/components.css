@@ -1,0 +1,216 @@
+/* ==========================================================================
+   Components — Buttons, Badges, Shared Elements
+   ========================================================================== */
+
+/* ── Buttons ── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: var(--sidebar-dark-bg);
+  color: var(--sidebar-dark-text);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-primary:hover {
+  background: var(--sidebar-dark-surface);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:active { transform: translateY(0); }
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: var(--main-surface);
+  color: var(--main-text);
+  border: 1px solid var(--main-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-secondary:hover {
+  background: var(--main-bg);
+  border-color: var(--main-muted);
+}
+
+.btn-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.85rem;
+  background: var(--main-surface);
+  color: var(--main-text-secondary);
+  border: 1px solid var(--main-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.btn-header:hover {
+  background: var(--main-bg);
+  border-color: var(--main-muted);
+  color: var(--main-text);
+}
+
+.btn-share {
+  background: var(--olive-light);
+  border-color: var(--olive-primary);
+  color: var(--sidebar-dark-bg);
+}
+
+.btn-share:hover {
+  background: var(--olive-primary);
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition-fast);
+}
+
+.btn-icon:hover { background: rgba(255,255,255,0.1); }
+
+.btn-icon-sm {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-xs);
+  transition: background var(--transition-fast);
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.btn-icon-sm:hover { background: rgba(255,255,255,0.1); }
+
+.btn-sm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.65rem;
+  background: var(--main-surface);
+  color: var(--main-text);
+  border: 1px solid var(--main-border);
+  border-radius: var(--radius-xs);
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-sm:hover {
+  background: var(--main-bg);
+  border-color: var(--main-muted);
+}
+
+/* ── Badges ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.15rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.badge-ok { background: var(--success-subtle); color: var(--success-text); }
+.badge-warn { background: var(--danger-subtle); color: var(--danger-text); }
+.badge-info { background: var(--info-subtle); color: var(--info-text); }
+.badge-stale { background: var(--warning-subtle); color: var(--warning-text); }
+
+/* ── Utility ── */
+.hidden { display: none !important; }
+.text-muted { color: var(--main-muted); }
+.text-sm { font-size: 0.72rem; }
+
+/* ── Spinner ── */
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--main-border);
+  border-top-color: var(--olive-primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── Scrollbar defaults for main content ── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--main-border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--main-muted); }
+
+/* ── Print ── */
+@media print {
+  body {
+    display: block;
+    background: #fff;
+    color: #000;
+  }
+
+  .sidebar-left, .sidebar-right, .main-header, .status-bar,
+  .view-toggle, .modal-overlay, .drawer, .timeline-empty,
+  .command-bar, .command-overlay { display: none !important; }
+
+  .main-area {
+    overflow: visible;
+    height: auto;
+  }
+
+  .timeline-container {
+    overflow: visible;
+    padding: 0;
+  }
+
+  .print-only { display: block !important; margin-bottom: 1rem; font-weight: 600; }
+
+  .event-card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    break-inside: avoid;
+  }
+
+  .agent-chip.locked {
+    border: 2px solid #000 !important;
+    font-weight: 700;
+  }
+}

@@ -1,0 +1,135 @@
+/* ==========================================================================
+   Responsive — Tablet & Mobile Breakpoints
+   ========================================================================== */
+
+/* ── Tablet: Collapse right sidebar ── */
+@media (max-width: 1200px) {
+  body {
+    grid-template-columns: 260px 1fr;
+  }
+
+  .sidebar-right {
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    z-index: 99;
+    transform: translateX(100%);
+    transition: transform var(--transition-slow);
+    box-shadow: var(--shadow-overlay);
+  }
+
+  .sidebar-right.visible {
+    transform: translateX(0);
+  }
+}
+
+/* ── Small Tablet ── */
+@media (max-width: 900px) {
+  body {
+    grid-template-columns: 1fr;
+  }
+
+  .sidebar-left {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 260px;
+    z-index: 99;
+    transform: translateX(-100%);
+    transition: transform var(--transition-slow);
+    box-shadow: var(--shadow-overlay);
+  }
+
+  .sidebar-left.visible {
+    transform: translateX(0);
+  }
+
+  .main-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .timeline-container {
+    padding: 0 1.25rem 1.25rem;
+  }
+
+  .day-block {
+    grid-template-columns: 80px 1fr;
+    gap: 1rem;
+  }
+
+  .day-number {
+    font-size: 3rem;
+  }
+}
+
+/* ── Mobile ── */
+@media (max-width: 720px) {
+  .main-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 1rem;
+  }
+
+  .header-actions {
+    flex-wrap: wrap;
+    width: 100%;
+  }
+
+  .header-actions .btn-primary { flex: 1; justify-content: center; }
+
+  .timeline-container {
+    padding: 0 1rem 1rem;
+  }
+
+  .day-block {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1rem 0;
+  }
+
+  .day-label {
+    flex-direction: row;
+    gap: 0.75rem;
+    align-items: center;
+  }
+
+  .day-number { font-size: 2.5rem; }
+
+  .event-card { padding: 0.75rem; }
+
+  .drawer {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .form-row,
+  .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .advanced-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .agents-table thead { display: none; }
+
+  .agents-table tr {
+    display: grid;
+    gap: 0.35rem;
+    padding: 0.5rem;
+    border-bottom: 1px solid var(--main-border-subtle);
+  }
+
+  .agents-table td {
+    border: none;
+    padding: 0;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
