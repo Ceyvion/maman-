@@ -382,28 +382,38 @@ async function loadTrackerView(year) {
 // ── Export ──
 async function handleExportCsv() {
   if (!lastAssignments.length) return;
-  const req = buildRequest();
-  const blob = await apiExportCsv({
-    assignments: lastAssignments,
-    agents: getEffectiveAgents(getAgents()),
-    service_unit: req.params.service_unit,
-    start_date: req.params.start_date,
-    end_date: req.params.end_date
-  });
-  downloadBlob(blob, "planning.csv");
+  const statusMsg = document.getElementById("status_message");
+  try {
+    const req = buildRequest();
+    const blob = await apiExportCsv({
+      assignments: lastAssignments,
+      agents: getEffectiveAgents(getAgents()),
+      service_unit: req.params.service_unit,
+      start_date: req.params.start_date,
+      end_date: req.params.end_date
+    });
+    downloadBlob(blob, "planning.csv");
+  } catch (err) {
+    if (statusMsg) statusMsg.textContent = `Erreur export CSV: ${err.message}`;
+  }
 }
 
 async function handleExportPdf() {
   if (!lastAssignments.length) return;
-  const req = buildRequest();
-  const blob = await apiExportPdf({
-    assignments: lastAssignments,
-    agents: getEffectiveAgents(getAgents()),
-    service_unit: req.params.service_unit,
-    start_date: req.params.start_date,
-    end_date: req.params.end_date
-  });
-  downloadBlob(blob, "planning.pdf");
+  const statusMsg = document.getElementById("status_message");
+  try {
+    const req = buildRequest();
+    const blob = await apiExportPdf({
+      assignments: lastAssignments,
+      agents: getEffectiveAgents(getAgents()),
+      service_unit: req.params.service_unit,
+      start_date: req.params.start_date,
+      end_date: req.params.end_date
+    });
+    downloadBlob(blob, "planning.pdf");
+  } catch (err) {
+    if (statusMsg) statusMsg.textContent = `Erreur export PDF: ${err.message}`;
+  }
 }
 
 // ── Command Bar Commands ──

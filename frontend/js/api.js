@@ -82,6 +82,14 @@ export async function apiExportCsv(payload) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
   });
+  if (!res.ok) {
+    let detail = "Export CSV indisponible.";
+    try {
+      const data = await res.json();
+      if (data?.detail) detail = data.detail;
+    } catch (_) {}
+    throw new Error(detail);
+  }
   return res.blob();
 }
 
@@ -91,6 +99,14 @@ export async function apiExportPdf(payload) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload)
   });
+  if (!res.ok) {
+    let detail = "Export PDF indisponible.";
+    try {
+      const data = await res.json();
+      if (data?.detail) detail = data.detail;
+    } catch (_) {}
+    throw new Error(detail);
+  }
   return res.blob();
 }
 
