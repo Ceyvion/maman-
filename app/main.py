@@ -177,20 +177,26 @@ def generate(req: GenerateRequest) -> GenerateResponse:
     tracker_year = None
     if req.params.use_tracker:
         tracker_year = req.params.tracker_year
-        tracker_baseline = snapshot_minutes(load_tracker(), tracker_year)
+        try:
+            tracker_baseline = snapshot_minutes(load_tracker(), tracker_year)
+        except Exception:
+            tracker_baseline = {}
 
     status, assignments, score, explanation, added_agents = build_solution(req, tracker_baseline)
     if status != "ok":
-        write_audit_event(
-            "generate_infeasible",
-            {
-                "service_unit": req.params.service_unit,
-                "start_date": req.params.start_date,
-                "end_date": req.params.end_date,
-                "agents_count": len(req.agents),
-                "reason": explanation or "infeasible",
-            },
-        )
+        try:
+            write_audit_event(
+                "generate_infeasible",
+                {
+                    "service_unit": req.params.service_unit,
+                    "start_date": req.params.start_date,
+                    "end_date": req.params.end_date,
+                    "agents_count": len(req.agents),
+                    "reason": explanation or "infeasible",
+                },
+            )
+        except Exception:
+            pass
         compliance = ComplianceReport(hard_violations=[explanation or "infeasible"], warnings=[], ruleset_used={})
         return GenerateResponse(
             status="infeasible",
@@ -209,27 +215,33 @@ def generate(req: GenerateRequest) -> GenerateResponse:
 
     tracker_updated = False
     if req.params.use_tracker and req.params.record_tracker_on_generate:
-        data = load_tracker()
-        durations = {code: s.duration_minutes for code, s in req.params.shifts.items()}
-        name_map = {a.id: f"{a.last_name} {a.first_name}".strip() for a in all_agents}
-        for assignment in assignments:
-            minutes = durations.get(assignment.shift, 0)
-            add_minutes(data, req.params.tracker_year, assignment.agent_id, minutes, name_map.get(assignment.agent_id))
-        save_tracker(data)
-        tracker_updated = True
+        try:
+            data = load_tracker()
+            durations = {code: s.duration_minutes for code, s in req.params.shifts.items()}
+            name_map = {a.id: f"{a.last_name} {a.first_name}".strip() for a in all_agents}
+            for assignment in assignments:
+                minutes = durations.get(assignment.shift, 0)
+                add_minutes(data, req.params.tracker_year, assignment.agent_id, minutes, name_map.get(assignment.agent_id))
+            save_tracker(data)
+            tracker_updated = True
+        except Exception:
+            tracker_updated = False
 
-    write_audit_event(
-        "generate_ok",
-        {
-            "service_unit": req.params.service_unit,
-            "start_date": req.params.start_date,
-            "end_date": req.params.end_date,
-            "agents_count": len(all_agents),
-            "assignments_count": len(assignments),
-            "added_agents_count": len(added_agents),
-            "tracker_updated": tracker_updated,
-        },
-    )
+    try:
+        write_audit_event(
+            "generate_ok",
+            {
+                "service_unit": req.params.service_unit,
+                "start_date": req.params.start_date,
+                "end_date": req.params.end_date,
+                "agents_count": len(all_agents),
+                "assignments_count": len(assignments),
+                "added_agents_count": len(added_agents),
+                "tracker_updated": tracker_updated,
+            },
+        )
+    except Exception:
+        pass
 
     return GenerateResponse(
         status="ok",
