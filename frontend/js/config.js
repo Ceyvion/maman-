@@ -2,7 +2,10 @@
 // Configuration & Constants
 // ==========================================================================
 
-export const API_BASE = `${window.location.protocol}//${window.location.hostname || "localhost"}:8000`;
+const isLocalDev = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+export const API_BASE = isLocalDev
+  ? `${window.location.protocol}//${window.location.hostname || "localhost"}:8000`
+  : `${window.location.protocol}//${window.location.hostname || "localhost"}`;
 
 export const SHIFT_DEFS = {
   MATIN:    { start: "07:00", end: "14:00", duration_minutes: 420, label: "MATIN",    short: "M",  labelFull: "Matin (07:00-14:00)" },

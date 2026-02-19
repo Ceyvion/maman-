@@ -2,11 +2,13 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
 from io import BytesIO
+from pathlib import Path
 from typing import Dict, List
 
 import pandas as pd
 from fastapi import FastAPI, HTTPException, Query, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.colors import HexColor, Color
 from reportlab.lib.units import mm
@@ -45,6 +47,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"]
 )
+
+FRONTEND_DIR = Path(__file__).resolve().parent.parent / "frontend"
 
 
 @app.get("/health")
@@ -537,3 +541,7 @@ def export_pdf(req: ExportRequest) -> Response:
         },
     )
     return Response(content=pdf, media_type="application/pdf", headers={"Content-Disposition": "attachment; filename=planning.pdf"})
+
+
+if FRONTEND_DIR.exists():
+    app.mount("/", StaticFiles(directory=str(FRONTEND_DIR), html=True), name="frontend")
