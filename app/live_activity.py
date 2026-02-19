@@ -8,6 +8,7 @@ from typing import Dict, List, Optional
 from uuid import uuid4
 
 LIVE_ACTIVITY_PATH = Path(__file__).resolve().parent.parent / "data" / "live_activity.json"
+_TMP_STORAGE = Path("/tmp") / "maman-emploi" / "data"
 _LOCK = Lock()
 
 
@@ -23,26 +24,45 @@ def _parse_iso(iso: str) -> Optional[datetime]:
 
 
 def _ensure_file(path: Path) -> None:
-    if not path.parent.exists():
+    target = _resolve_storage_path(path)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    if not target.exists():
+        target.write_text(json.dumps({"entries": []}, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _resolve_storage_path(path: Path) -> Path:
+    try:
         path.parent.mkdir(parents=True, exist_ok=True)
-    if not path.exists():
-        path.write_text(json.dumps({"entries": []}, ensure_ascii=False, indent=2), encoding="utf-8")
+        # Probe writability when file does not exist yet (common on first startup)
+        if not path.exists():
+            path.write_text(json.dumps({"entries": []}, ensure_ascii=False, indent=2), encoding="utf-8")
+            path.unlink()
+        return path
+    except OSError:
+        _TMP_STORAGE.mkdir(parents=True, exist_ok=True)
+        return _TMP_STORAGE / path.name
 
 
 def _load_raw(path: Path = LIVE_ACTIVITY_PATH) -> Dict[str, List[Dict[str, object]]]:
-    _ensure_file(path)
+    path = _resolve_storage_path(path)
     try:
+        _ensure_file(path)
         data = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         data = {"entries": []}
+    except OSError:
+        return {"entries": []}
     if not isinstance(data, dict) or "entries" not in data or not isinstance(data["entries"], list):
         return {"entries": []}
     return data
 
 
 def _save_raw(data: Dict[str, List[Dict[str, object]]], path: Path = LIVE_ACTIVITY_PATH) -> None:
-    _ensure_file(path)
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    path = _resolve_storage_path(path)
+    try:
+        path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    except OSError:
+        return
 
 
 def create_live_entry(

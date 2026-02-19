@@ -13,6 +13,7 @@ from reportlab.lib.pagesizes import A4, landscape
 from reportlab.lib.colors import HexColor, Color
 from reportlab.lib.units import mm
 from reportlab.pdfgen import canvas
+from pydantic import ValidationError
 
 from .audit import read_recent_audit_events, write_audit_event
 from .compliance import (
@@ -285,21 +286,40 @@ def get_live_entries(
     shift: str | None = Query(default=None),
     include_done: bool = Query(default=True),
 ) -> LiveTaskListResponse:
-    purged = purge_old_entries(COMPLIANCE_SETTINGS.live_task_retention_days)
-    entries = list_live_entries(
-        start_date=start_date,
-        end_date=end_date,
-        agent_id=agent_id,
-        shift=shift,
-        include_done=include_done,
-    )
-    if purged > 0:
-        write_audit_event(
-            "live_purge",
-            {"retention_days": COMPLIANCE_SETTINGS.live_task_retention_days, "removed_entries": purged},
+    try:
+        purged = purge_old_entries(COMPLIANCE_SETTINGS.live_task_retention_days)
+    except Exception:
+        purged = 0
+
+    try:
+        entries = list_live_entries(
+            start_date=start_date,
+            end_date=end_date,
+            agent_id=agent_id,
+            shift=shift,
+            include_done=include_done,
         )
+    except Exception:
+        entries = []
+
+    parsed_entries = []
+    for entry in entries:
+        try:
+            parsed_entries.append(LiveTaskEntry(**entry))
+        except ValidationError:
+            continue
+
+    if purged > 0:
+        try:
+            write_audit_event(
+                "live_purge",
+                {"retention_days": COMPLIANCE_SETTINGS.live_task_retention_days, "removed_entries": purged},
+            )
+        except Exception:
+            pass
+
     return LiveTaskListResponse(
-        entries=[LiveTaskEntry(**entry) for entry in entries],
+        entries=parsed_entries,
         server_time=datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
     )
 
