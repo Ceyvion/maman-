@@ -173,6 +173,8 @@ async function handleGenerateMonth() {
   const startEl = document.getElementById("start_date");
   const endEl = document.getElementById("end_date");
   if (!startEl || !endEl) return;
+  const statusMsg = document.getElementById("status_message");
+  const statusBar = document.getElementById("status_bar");
 
   // Check for agents first
   const agentIssues = getPanel2Issues();
@@ -223,8 +225,6 @@ async function handleGenerateMonth() {
     return;
   }
 
-  const statusMsg = document.getElementById("status_message");
-  const statusBar = document.getElementById("status_bar");
   if (statusBar) { statusBar.classList.remove("hidden"); }
   if (statusMsg) statusMsg.textContent = `Generation du mois complet: ${MONTH_NAMES_FR[month]} ${year}...`;
 
